@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#08111f" />
+  <meta name="description" content="Genome Pattern Lab — an interactive educational DNA sequence feature extraction and machine-learning classification demo." />
+  <title>Genome Pattern Lab | DNA Classifier</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap');
+    :root{--bg:#07111e;--panel:#0d1a2b;--panel2:#102137;--line:rgba(154,184,214,.14);--muted:#8da3bb;--text:#eaf3ff;--cyan:#5ee7e0;--blue:#6ca8ff;--violet:#a78bfa;--green:#5ee0a0;--amber:#ffc978;--red:#ff8b9b;--radius:20px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 15% -10%,rgba(40,120,160,.2),transparent 40%),radial-gradient(ellipse at 90% 10%,rgba(111,78,190,.16),transparent 34%),var(--bg);color:var(--text);font-family:Manrope,system-ui,sans-serif;line-height:1.55}
+    button,input,textarea{font:inherit}button{cursor:pointer}.mono{font-family:"DM Mono",monospace}.wrap{width:min(1160px,calc(100% - 40px));margin:auto}
+    header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;position:sticky;top:0;z-index:10;background:rgba(7,17,30,.84);backdrop-filter:blur(16px)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:11px;font-weight:800;letter-spacing:-.4px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--cyan),var(--blue));display:grid;place-items:center;color:#06111e;font-size:20px;box-shadow:0 8px 28px #45d8d344}.navlinks{display:flex;gap:23px}.navlinks a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:700}.navlinks a:hover{color:var(--text)}.status{border:1px solid #5ee0a044;color:var(--green);border-radius:99px;padding:7px 11px;font-size:11px;font-weight:800;letter-spacing:.5px}
+    .hero{padding:76px 0 48px;display:grid;grid-template-columns:1.12fr .88fr;gap:48px;align-items:center}.eyebrow{color:var(--cyan);font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;gap:9px}.eyebrow:before{content:"";width:25px;height:1px;background:var(--cyan)}h1{font-size:clamp(42px,6vw,68px);line-height:1.04;letter-spacing:-3.5px;margin:18px 0}.gradient{background:linear-gradient(100deg,#eaf3ff 15%,#75e8e0 60%,#9c9aff);-webkit-background-clip:text;background-clip:text;color:transparent}.hero p{color:var(--muted);max-width:590px;font-size:16px}.actions{display:flex;gap:12px;margin-top:27px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:12px;padding:12px 17px;color:var(--text);background:#14263b;font-weight:800;font-size:13px;transition:.2s}.btn:hover{transform:translateY(-2px);border-color:#5ee7e077}.btn.primary{background:linear-gradient(110deg,var(--cyan),#8bb7ff);color:#07111e;border:0}.hero-visual{position:relative;min-height:310px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(145deg,#11253b,#0a1728);overflow:hidden;padding:24px;box-shadow:0 30px 80px #0005}.hero-visual:before,.hero-visual:after{content:"";position:absolute;border:1px solid #5ee7e022;border-radius:50%;width:280px;height:280px;right:-70px;top:5px}.hero-visual:after{width:210px;height:210px;right:-35px;top:40px}.visual-top{display:flex;justify-content:space-between;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1px}.helix{height:180px;display:flex;align-items:center;justify-content:center;gap:10px;position:relative;z-index:1}.pair{display:flex;flex-direction:column;gap:22px;align-items:center;animation:float 3s ease-in-out infinite}.pair:nth-child(even){animation-delay:-1.5s}.base{width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font:12px "DM Mono";font-weight:500;box-shadow:0 0 22px currentColor}.a{color:#5ee7e0;background:#5ee7e022}.t{color:#ffbd70;background:#ffbd7022}.g{color:#9b9aff;background:#9b9aff22}.c{color:#7db4ff;background:#7db4ff22}@keyframes float{50%{transform:translateY(9px)}}.visual-foot{position:relative;z-index:1;display:flex;justify-content:space-between;color:var(--muted);font-size:11px}.visual-foot b{color:var(--cyan)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:4px 0 52px}.stat,.panel{border:1px solid var(--line);background:linear-gradient(145deg,rgba(16,33,55,.92),rgba(10,24,40,.92));border-radius:var(--radius)}.stat{padding:17px 19px}.stat small{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}.stat strong{display:block;font-size:25px;margin-top:5px;letter-spacing:-1px}.stat span{color:var(--muted);font-size:11px}
+    section{margin:0 0 52px;scroll-margin-top:96px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:18px}.section-head h2{font-size:25px;letter-spacing:-1px;margin:5px 0}.section-head p{color:var(--muted);font-size:13px;margin:0}.kicker{font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:var(--cyan);font-weight:800}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{padding:22px}.panel h3{font-size:16px;margin:0 0 6px}.sub{color:var(--muted);font-size:12px;margin:0 0 18px}.field-label{display:block;color:#b9c9dc;font-size:11px;font-weight:800;letter-spacing:.7px;margin:14px 0 7px;text-transform:uppercase}textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--line);background:#071321;color:var(--text);border-radius:12px;padding:13px;font:13px "DM Mono";outline:none}textarea:focus,input:focus{border-color:#5ee7e088;box-shadow:0 0 0 3px #5ee7e012}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.hint{font-size:11px;color:var(--muted);margin-top:8px}.error{color:var(--red);font-size:12px;min-height:18px;margin-top:8px}.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:17px}.metric{padding:12px;border:1px solid var(--line);border-radius:12px;background:#091727}.metric span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.7px}.metric b{display:block;font:18px "DM Mono";margin-top:5px}.base-a{color:var(--cyan)}.base-t{color:var(--amber)}.base-g{color:var(--violet)}.base-c{color:var(--blue)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:13px}table{width:100%;border-collapse:collapse;min-width:560px;font-size:12px}th{text-align:left;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.8px;background:#0a1727;padding:12px}td{padding:13px 12px;border-top:1px solid var(--line)}td:first-child{font-weight:800}.seq{font-family:"DM Mono";color:#c2d8ee}.pill{display:inline-flex;padding:4px 9px;border-radius:99px;font-size:10px;font-weight:800;background:#5ee7e015;color:var(--cyan);border:1px solid #5ee7e033}.pill.b{background:#a78bfa15;color:#c1b1ff;border-color:#a78bfa33}
+    .model-box{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center}.model-status{display:flex;align-items:center;gap:10px;color:var(--green);font-size:12px;font-weight:800}.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 12px var(--green)}.tree{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 5px}.node{border:1px solid #5ee7e055;background:#10283a;border-radius:12px;padding:10px 15px;text-align:center;font:11px "DM Mono";max-width:100%}.branches{display:flex;justify-content:center;gap:30px;width:100%;position:relative}.branches:before{content:"";position:absolute;top:-10px;height:10px;border-left:1px solid #5ee7e055}.leaf{border:1px solid var(--line);border-radius:12px;padding:12px 17px;background:#0a1929;text-align:center;min-width:110px}.leaf b{display:block;font-size:13px}.leaf small{color:var(--muted);font-size:10px}.prediction{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px;border:1px solid #5ee7e044;border-radius:15px;background:linear-gradient(110deg,#102b39,#111d35);margin-top:15px}.prediction strong{font-size:24px;letter-spacing:-1px}.prediction small{color:var(--muted);display:block;font-size:11px}.prediction .big{font-size:35px;color:var(--cyan);font-weight:800}
+    .feature-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.feature{border:1px solid var(--line);border-radius:15px;padding:16px;background:#0c1b2d}.feature .icon{width:32px;height:32px;border-radius:10px;background:#5ee7e018;color:var(--cyan);display:grid;place-items:center;margin-bottom:11px}.feature b{font-size:13px}.feature p{color:var(--muted);font-size:11px;margin:5px 0 0}.note{border-left:3px solid var(--amber);padding:12px 15px;background:#ffc9780c;border-radius:0 10px 10px 0;color:#c7d3e0;font-size:12px;margin-top:15px}.note strong{color:var(--amber)}.discussion{display:grid;grid-template-columns:1fr 1fr;gap:12px}.qa{padding:16px;border:1px solid var(--line);border-radius:14px;background:#0c1b2d}.qa b{font-size:12px}.qa p{color:var(--muted);font-size:12px;margin:7px 0 0}footer{border-top:1px solid var(--line);padding:26px 0 40px;color:var(--muted);font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#eaf3ff;color:#07111e;padding:11px 17px;border-radius:10px;font-size:12px;font-weight:800;transition:.25s;z-index:30}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-width:820px){.hero{grid-template-columns:1fr;padding-top:50px;gap:28px}.hero-visual{min-height:260px}.stats{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.navlinks{display:none}.feature-list{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:520px){.wrap{width:min(100% - 26px,1160px)}header{height:65px}.hero{padding:42px 0 30px}h1{letter-spacing:-2px}.stats{gap:8px}.stat{padding:13px}.stat strong{font-size:21px}.panel{padding:16px}.section-head{align-items:start;flex-direction:column}.feature-list,.discussion{grid-template-columns:1fr}.result-grid{grid-template-columns:repeat(2,1fr)}.model-box{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header><div class="wrap nav">
+  <div class="brand"><div class="logo">⌁</div><span>GENOME<span style="color:var(--cyan)">LAB</span></span></div>
+  <nav class="navlinks"><a href="#analyzer">Analyzer</a><a href="#dataset">Dataset</a><a href="#model">ML Model</a><a href="#about">About</a></nav>
+  <span class="status">● SYSTEM READY</span>
+</div></header>
+<main class="wrap">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">COMPUTATIONAL BIOLOGY · CLA 2</div>
+      <h1>Decode the <span class="gradient">DNA pattern.</span></h1>
+      <p>An interactive learning lab for DNA feature extraction and machine-learning classification. Explore nucleotide composition, train a small decision tree, and classify an unknown sequence.</p>
+      <div class="actions"><button class="btn primary" onclick="document.querySelector('#analyzer').scrollIntoView()">Launch analyzer ↗</button><button class="btn" onclick="loadUnknown()">Try sample sequence</button></div>
+    </div>
+    <div class="hero-visual">
+      <div class="visual-top"><span>SEQUENCE VISUALIZATION</span><span>01 / DNA</span></div>
+      <div class="helix" aria-label="DNA nucleotide visualization">
+        <div class="pair"><span class="base a">A</span><span class="base t">T</span></div><div class="pair"><span class="base g">G</span><span class="base c">C</span></div><div class="pair"><span class="base c">C</span><span class="base g">G</span></div><div class="pair"><span class="base t">T</span><span class="base a">A</span></div><div class="pair"><span class="base g">G</span><span class="base c">C</span></div><div class="pair"><span class="base a">A</span><span class="base t">T</span></div>
+      </div>
+      <div class="visual-foot"><span>NUCLEOTIDES <b>A · T · G · C</b></span><span>FEATURE EXTRACTION <b>ACTIVE</b></span></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><small>Training sequences</small><strong>04</strong><span>Provided labelled examples</span></div>
+    <div class="stat"><small>Extracted features</small><strong>06</strong><span>A, T, G, C, length, GC%</span></div>
+    <div class="stat"><small>Classifier</small><strong style="font-size:21px">Decision Tree</strong><span>Gini impurity split</span></div>
+    <div class="stat"><small>Unknown sample</small><strong>01</strong><span>ATGCGCGATC</span></div>
+  </div>
+
+  <section id="analyzer">
+    <div class="section-head"><div><div class="kicker">01 / INTERACTIVE TOOL</div><h2>DNA sequence analyzer</h2><p>Enter a DNA sequence to calculate its numerical features instantly.</p></div><span class="pill">LIVE FEATURE EXTRACTION</span></div>
+    <div class="grid2">
+      <div class="panel">
+        <h3>Sequence input</h3><p class="sub">Only the DNA bases A, T, G and C are accepted. Spaces and line breaks are ignored.</p>
+        <label class="field-label" for="sequence">DNA sequence</label>
+        <textarea id="sequence" spellcheck="false" placeholder="Example: ATGCGCGATC">ATGCGCGATC</textarea>
+        <div class="row" style="margin-top:12px"><button class="btn primary" id="analyzeBtn">Analyze sequence</button><button class="btn" onclick="loadUnknown()">Load unknown sample</button><button class="btn" onclick="clearInput()">Clear</button></div>
+        <div id="inputError" class="error" role="status"></div>
+        <div class="hint">Tip: Try changing one or two bases and observe how the feature values change.</div>
+      </div>
+      <div class="panel">
+        <h3>Extracted features</h3><p class="sub">Calculated from the sequence entered on the left.</p>
+        <div class="result-grid" id="featureResults">
+          <div class="metric"><span class="base-a">A count</span><b id="fA">2</b></div><div class="metric"><span class="base-t">T count</span><b id="fT">2</b></div><div class="metric"><span class="base-g">G count</span><b id="fG">3</b></div><div class="metric"><span class="base-c">C count</span><b id="fC">3</b></div><div class="metric"><span>Length</span><b id="fL">10</b></div><div class="metric"><span>GC content</span><b id="fGC">60%</b></div>
+        </div>
+        <div class="note">GC content = <span class="mono">(G + C) / sequence length × 100</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dataset">
+    <div class="section-head"><div><div class="kicker">02 / TRAINING DATA</div><h2>Known sequence dataset</h2><p>The four labelled examples supplied in the assignment brief.</p></div><button class="btn" onclick="downloadCSV()">↓ Export feature table</button></div>
+    <div class="panel">
+      <div class="table-wrap"><table><thead><tr><th>Sequence ID</th><th>DNA sequence</th><th>A</th><th>T</th><th>G</th><th>C</th><th>Length</th><th>GC %</th><th>Group</th></tr></thead><tbody id="datasetBody"></tbody></table></div>
+      <div class="hint" style="margin-top:12px">Dataset source: the four example sequences in the CLA-2 assignment instructions.</div>
+    </div>
+  </section>
+
+  <section id="model">
+    <div class="section-head"><div><div class="kicker">03 / MACHINE LEARNING</div><h2>Train & classify</h2><p>A small, explainable decision-tree implementation runs locally in your browser.</p></div></div>
+    <div class="grid2">
+      <div class="panel">
+        <div class="model-box"><div><h3>Decision Tree Classifier</h3><p class="sub" style="margin:4px 0 0">CART-style binary splits · Gini impurity</p></div><div class="model-status"><span class="dot"></span> READY</div></div>
+        <div class="tree" id="treeVisual"><div class="node">Training model…</div></div>
+        <div class="row"><button class="btn primary" onclick="trainAndRender()">↻ Train model</button><span class="hint">Trains on all 4 labelled examples.</span></div>
+        <div class="note"><strong>Interpretation:</strong> This is a teaching demo. With only four examples, the model can memorize the training data; training accuracy is not evidence of real-world performance.</div>
+      </div>
+      <div class="panel">
+        <h3>Unknown sequence prediction</h3><p class="sub">The assignment asks you to classify this sequence:</p>
+        <div class="mono" style="font-size:15px;color:var(--cyan);padding:13px;background:#071321;border-radius:10px;letter-spacing:1px" id="unknownText">ATGCGCGATC</div>
+        <div class="prediction"><div><small>MODEL PREDICTION</small><strong id="predictionLabel">Group B</strong><small id="predictionExplain">Predicted from the extracted features</small></div><div class="big" id="predictionLetter">B</div></div>
+        <div class="result-grid" style="grid-template-columns:1fr 1fr"><div class="metric"><span>Training accuracy</span><b id="accuracy">—</b></div><div class="metric"><span>Training samples</span><b>4</b></div></div>
+        <p class="hint">Accuracy shown is measured on the same four sequences used for training. It is not a test-set score.</p>
+        <div class="row" style="margin-top:15px"><button class="btn" onclick="predictUnknown()">Run prediction</button><button class="btn" onclick="downloadReport()">↓ Download summary</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head"><div><div class="kicker">04 / LEARNING NOTES</div><h2>Understand the workflow</h2><p>What this mini-project demonstrates and where the method has limits.</p></div></div>
+    <div class="feature-list">
+      <div class="feature"><div class="icon">⌗</div><b>Feature extraction</b><p>Convert biological sequence characters into numerical values that a machine-learning algorithm can process.</p></div>
+      <div class="feature"><div class="icon">◈</div><b>Model training</b><p>Use labelled examples so a classifier can learn patterns associated with Group A and Group B.</p></div>
+      <div class="feature"><div class="icon">⌁</div><b>Prediction</b><p>Apply the learned decision rules to the feature values of an unknown DNA sequence.</p></div>
+    </div>
+    <div style="margin-top:16px" class="discussion">
+      <div class="qa"><b>Which features may be useful?</b><p>Nucleotide counts and GC content describe the base composition. The tiny dataset makes it difficult to know which features generalize.</p></div>
+      <div class="qa"><b>Can the prediction be verified?</b><p>Not from this assignment dataset alone. The unknown sequence has no supplied true label, so its predicted group cannot be confirmed.</p></div>
+      <div class="qa"><b>What if a sequence is very different?</b><p>The classifier may make an unreliable prediction because it has seen only a few examples and may not have learned broader biological patterns.</p></div>
+      <div class="qa"><b>One genomics application</b><p>Researchers can use ML to help identify genetic patterns associated with diseases, alongside appropriate biological validation.</p></div>
+    </div>
+    <div class="note"><strong>Important limitation:</strong> This project uses only four short sequences and basic composition features. Real genomic analysis needs much larger, diverse, carefully labelled datasets and biological validation. A sequence's biological meaning is not determined by GC content alone.</div>
+  </section>
+</main>
+<footer><div class="wrap footer-inner"><span>© 2026 GENOME LAB · EDUCATIONAL PROJECT</span><span>Introduction to Computational Biology · CLA-2</span><span>Built for learning, not clinical use.</span></div></footer>
+<div class="toast" id="toast">Done</div>
+<script>
+const samples = [
+  {id:"S1", sequence:"ATGCGATC", group:"A"},
+  {id:"S2", sequence:"ATGCGTAC", group:"A"},
+  {id:"S3", sequence:"GCGCGTAT", group:"B"},
+  {id:"S4", sequence:"GCGCGCGC", group:"B"}
+];
+const unknown = "ATGCGCGATC";
+let model = null;
+function features(sequence){
+  const s = sequence.toUpperCase().replace(/\s+/g,"");
+  if(!s) throw new Error("Enter a DNA sequence first.");
+  if(!/^[ATGC]+$/.test(s)) throw new Error("Invalid DNA sequence. Use only A, T, G and C.");
+  const A=(s.match(/A/g)||[]).length,T=(s.match(/T/g)||[]).length,G=(s.match(/G/g)||[]).length,C=(s.match(/C/g)||[]).length;
+  return {A,T,G,C,length:s.length,GC:((G+C)/s.length)*100};
+}
+function showFeatures(f){
+  document.getElementById("fA").textContent=f.A;document.getElementById("fT").textContent=f.T;
+  document.getElementById("fG").textContent=f.G;document.getElementById("fC").textContent=f.C;
+  document.getElementById("fL").textContent=f.length;document.getElementById("fGC").textContent=f.GC.toFixed(1)+"%";
+}
+function analyze(){
+  const error=document.getElementById("inputError");
+  try{const s=document.getElementById("sequence").value;const f=features(s);showFeatures(f);error.textContent="";return {sequence:s.toUpperCase().replace(/\s+/g,""),features:f};}
+  catch(e){error.textContent=e.message;return null;}
+}
+function renderDataset(){
+  document.getElementById("datasetBody").innerHTML=samples.map(x=>{
+    const f=features(x.sequence);
+    return `<tr><td>${x.id}</td><td class="seq">${x.sequence}</td><td>${f.A}</td><td>${f.T}</td><td>${f.G}</td><td>${f.C}</td><td>${f.length}</td><td>${f.GC.toFixed(1)}%</td><td><span class="pill ${x.group==="B"?"b":""}">Group ${x.group}</span></td></tr>`;
+  }).join("");
+}
+const featureNames=["A","T","G","C","length","GC"];
+function gini(rows){
+  if(!rows.length)return 0;
+  const counts={A:0,B:0};rows.forEach(r=>counts[r.group]++);
+  const pA=counts.A/rows.length,pB=counts.B/rows.length;
+  return 1-pA*pA-pB*pB;
+}
+function majority(rows){const a=rows.filter(r=>r.group==="A").length,b=rows.length-a;return a>=b?"A":"B";}
+function buildTree(rows,depth=0,maxDepth=3){
+  const labels=new Set(rows.map(r=>r.group));
+  if(labels.size===1||depth>=maxDepth||rows.length<2)return {leaf:true,prediction:majority(rows),samples:rows.length};
+  const parent=gini(rows);let best=null;
+  for(const name of featureNames){
+    const vals=[...new Set(rows.map(r=>r.features[name]))].sort((a,b)=>a-b);
+    for(let i=0;i<vals.length-1;i++){
+      const threshold=(vals[i]+vals[i+1])/2;
+      const left=rows.filter(r=>r.features[name]<=threshold),right=rows.filter(r=>r.features[name]>threshold);
+      if(!left.length||!right.length)continue;
+      const weighted=(left.length/rows.length)*gini(left)+(right.length/rows.length)*gini(right);
+      const gain=parent-weighted;
+      if(!best||gain>best.gain+1e-10)best={name,threshold,left,right,gain};
+    }
+  }
+  if(!best||best.gain<=1e-10)return {leaf:true,prediction:majority(rows),samples:rows.length};
+  return {leaf:false,name:best.name,threshold:best.threshold,left:buildTree(best.left,depth+1,maxDepth),right:buildTree(best.right,depth+1,maxDepth),samples:rows.length};
+}
+function predict(tree,f){
+  let node=tree;while(!node.leaf)node=f[node.name]<=node.threshold?node.left:node.right;return node.prediction;
+}
+function train(){
+  const rows=samples.map(s=>({features:features(s.sequence),group:s.group}));
+  const tree=buildTree(rows);const correct=rows.filter(r=>predict(tree,r.features)===r.group).length;
+  model={tree,accuracy:correct/rows.length*100};return model;
+}
+function treeHTML(node){
+  if(node.leaf)return `<div class="leaf"><b>Group ${node.prediction}</b><small>${node.samples} sample(s)</small></div>`;
+  return `<div class="node">${node.name} ≤ ${Number(node.threshold.toFixed(2))}?</div><div class="branches"><div style="display:flex;flex-direction:column;align-items:center;gap:8px"><small style="color:var(--green)">YES</small>${treeHTML(node.left)}</div><div style="display:flex;flex-direction:column;align-items:center;gap:8px"><small style="color:var(--amber)">NO</small>${treeHTML(node.right)}</div></div>`;
+}
+function trainAndRender(){
+  model=train();document.getElementById("treeVisual").innerHTML=treeHTML(model.tree);
+  document.getElementById("accuracy").textContent=model.accuracy.toFixed(0)+"%";
+  predictUnknown();toast("Decision tree trained successfully");
+}
+function predictUnknown(){
+  if(!model)model=train();
+  const f=features(unknown),group=predict(model.tree,f);
+  document.getElementById("unknownText").textContent=unknown;
+  document.getElementById("predictionLabel").textContent="Group "+group;
+  document.getElementById("predictionLetter").textContent=group;
+  document.getElementById("predictionExplain").textContent=`Based on A=${f.A}, T=${f.T}, G=${f.G}, C=${f.C}, GC=${f.GC.toFixed(1)}%`;
+}
+function loadUnknown(){document.getElementById("sequence").value=unknown;analyze();document.getElementById("analyzer").scrollIntoView({behavior:"smooth"});}
+function clearInput(){document.getElementById("sequence").value="";document.getElementById("inputError").textContent="";document.getElementById("sequence").focus();}
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1900);}
+function downloadCSV(){
+  const header=["Sequence ID","DNA Sequence","A","T","G","C","Length","GC Content (%)","Group"];
+  const lines=samples.map(s=>{const f=features(s.sequence);return [s.id,s.sequence,f.A,f.T,f.G,f.C,f.length,f.GC.toFixed(1),s.group].join(",");});
+  const blob=new Blob([[header.join(","),...lines].join("\n")],{type:"text/csv"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="genome-feature-table.csv";a.click();URL.revokeObjectURL(a.href);toast("Feature table exported");
+}
+function downloadReport(){
+  if(!model)model=train();
+  const f=features(unknown),group=predict(model.tree,f);
+  const text=`GENOME PATTERN LAB — PROJECT SUMMARY\n\nObjective: Extract numerical features from DNA sequences and classify an unknown sequence using a decision tree.\n\nTRAINING DATA\n${samples.map(s=>{const x=features(s.sequence);return `${s.id}: ${s.sequence} | A=${x.A}, T=${x.T}, G=${x.G}, C=${x.C}, Length=${x.length}, GC=${x.GC.toFixed(1)}% | Group ${s.group}`}).join("\n")}\n\nUNKNOWN SEQUENCE\n${unknown}\nA=${f.A}, T=${f.T}, G=${f.G}, C=${f.C}, Length=${f.length}, GC=${f.GC.toFixed(1)}%\nPredicted group: ${group}\n\nTraining-set accuracy: ${model.accuracy.toFixed(1)}% (evaluated on the same four examples used for training; not a test-set score).\n\nApplication: Machine learning can help researchers identify genetic patterns associated with diseases, alongside biological validation.\nLimitation: Four short training sequences are far too few to establish reliable performance on new genomic data.\n\nNote: This is an educational browser-based implementation of a simple CART-style decision tree. Verify results with your faculty's required Python/Google Colab program if one was provided.`;
+  const blob=new Blob([text],{type:"text/plain"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="genome-pattern-project-summary.txt";a.click();URL.revokeObjectURL(a.href);toast("Project summary downloaded");
+}
+document.getElementById("analyzeBtn").addEventListener("click",analyze);
+document.getElementById("sequence").addEventListener("input",()=>{const v=analyze();});
+renderDataset();trainAndRender();analyze();
+</script>
+</body>
+</html>
