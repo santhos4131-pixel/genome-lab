@@ -1,45 +1,34 @@
-# Genome Pattern Lab
+# Genome Pattern Lab — Version 2.0
 
-An interactive, responsive educational website for the Introduction to Computational Biology CLA-2 assignment: **Predict the Genome Pattern**.
+An educational, responsive static website for the Computational Biology assignment.
 
-## Features
-- DNA sequence analyzer (accepts A, T, G, C)
-- Six feature calculations: A, T, G, C counts, sequence length, GC content
-- Assignment dataset table
-- CSV export of the feature table
-- Browser-based CART-style decision tree trained on the four supplied examples
-- Prediction for `ATGCGCGATC`
-- Training-set accuracy display with a clear warning about the tiny dataset
-- Downloadable plain-text project summary
-- Responsive layout for desktop and mobile
+## Files
+- `index.html` — complete website (HTML, CSS and JavaScript in one file)
+- `README.md` — this guide
+- `vercel.json` — static deployment configuration
 
 ## Run locally
-This is a static website. No installation or build step is required.
-
 1. Extract the ZIP.
-2. Open `index.html` in a browser.
+2. Open `index.html` in Chrome, Edge or Firefox.
+3. No installation or server is required.
 
-Optional local server:
-```bash
-python -m http.server 8000
-```
-Then visit `http://localhost:8000`.
+## Deploy with GitHub and Vercel
+1. Create a new GitHub repository.
+2. Upload the three files in this folder (not the ZIP file).
+3. Open Vercel and sign in with GitHub.
+4. Import the repository.
+5. Keep Framework Preset as `Other`; leave build command and output directory empty/default.
+6. Click Deploy.
 
-## Deploy to GitHub Pages
-1. Create a GitHub repository.
-2. Upload `index.html`, `README.md`, and `vercel.json`.
-3. In the repository, open **Settings → Pages**.
-4. Choose **Deploy from a branch**, select `main` and `/ (root)`, then save.
+## Features
+- DNA sequence validation and composition analysis
+- Six assignment features: A, T, G, C, length and GC content
+- Original four-row assignment dataset and CSV export
+- Educational CART-style decision tree, prediction path and training-set accuracy
+- Reverse complement, motif finder, equal-length sequence comparison
+- Single-base mutation simulator and simple FASTA reader
+- Downloadable project summary report
+- Responsive dark dashboard
 
-## Deploy to Vercel
-1. Push the project to GitHub.
-2. Sign in to Vercel and choose **Add New → Project**.
-3. Import the repository.
-4. Choose **Other** as the framework preset (or leave it as a static site if detected).
-5. Leave the build command empty and the output directory as `.`.
-6. Click **Deploy**.
-
-## Important academic note
-The assignment's four labelled DNA sequences are extremely small training data. The displayed accuracy is measured on the same four examples used to train the model; it is not an independent test score and does not establish real-world performance. The unknown sequence has no supplied true label, so its prediction cannot be independently verified.
-
-This browser implementation is a learning demonstration. If your instructor supplied a specific Python/Google Colab program, run that program too and use its output in the formal assignment report.
+## Academic note
+The assignment's dataset contains only four labelled samples. Training-set accuracy is not independent test accuracy. The unknown sequence has no supplied true label, so its predicted group cannot be verified from the assignment data. This JavaScript demonstration does not replace a Python/Google Colab program if the instructor requires one.
